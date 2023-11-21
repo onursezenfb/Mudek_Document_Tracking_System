@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('crn');
             $table->foreign('crn')->references('crn')->on('courses')->cascadeOnDelete(); // Foreign key referencing songs
             $table->string('type');
-            $table->foreign('type')->references('type')->on('documents')->cascadeOnDelete();
+            $table->foreign('type')->references('name')->on('documents')->cascadeOnDelete();
             $table->boolean('submitted');
             $table->binary('pdf_data');
             $table->timestamps();

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('teaches', function (Blueprint $table) {
             $table->string('term');
             $table->foreign('term')->references('term')->on('courses')->cascadeOnDelete();
-            $table->string('crn');
-            $table->foreign('crn')->references('crn')->on('courses')->cascadeOnDelete(); // Foreign key referencing songs
+            $table->string("crn");
+            $table->foreign("crn")->references("crn")->on('courses')->cascadeOnDelete();
             $table->string('username');
             $table->foreign('username')->references('username')->on('users')->cascadeOnDelete();
 

@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('requirementdocuments', function (Blueprint $table) {
+            $table->id();
             $table->string('req_type');
             $table->foreign('req_type')->references('type')->on('requirements')->cascadeOnDelete();
             $table->string('doc_type');
-            $table->foreign('doc_type')->references('type')->on('documents')->cascadeOnDelete();
+            $table->foreign('doc_type')->references('name')->on('documents')->cascadeOnDelete();
             $table->unique(['req_type', 'doc_type'], 'key');
             $table->timestamps();
         });
