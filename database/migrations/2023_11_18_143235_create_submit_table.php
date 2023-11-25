@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,16 +15,17 @@ return new class extends Migration
         Schema::create('submit', function (Blueprint $table) {
             $table->id();
             $table->string('term');
-            $table->foreign('term')->references('term')->on('courses')->cascadeOnDelete();
             $table->string('crn');
-            $table->foreign('crn')->references('crn')->on('courses')->cascadeOnDelete(); // Foreign key referencing songs
-            $table->string('type');
-            $table->foreign('type')->references('type')->on('documents')->cascadeOnDelete();
+            $table->string('name');
             $table->boolean('submitted');
             $table->binary('pdf_data');
             $table->timestamps();
         });
+    
+        DB::statement('ALTER TABLE submit ADD CONSTRAINT submit_courses_foreign FOREIGN KEY (term, crn) REFERENCES courses(term, crn) ON DELETE CASCADE');
+        DB::statement('ALTER TABLE submit ADD CONSTRAINT submit_documents_foreign FOREIGN KEY (name) REFERENCES documents(name) ON DELETE CASCADE');
     }
+    
 
     /**
      * Reverse the migrations.

@@ -13,16 +13,19 @@ return new class extends Migration
     {
         Schema::create('teaches', function (Blueprint $table) {
             $table->string('term');
-            $table->foreign('term')->references('term')->on('courses')->cascadeOnDelete();
             $table->string('crn');
-            $table->foreign('crn')->references('crn')->on('courses')->cascadeOnDelete(); // Foreign key referencing songs
             $table->string('username');
-            $table->foreign('username')->references('username')->on('users')->cascadeOnDelete();
-
-            $table->unique(['term', 'crn', 'username'], 'key');
             $table->timestamps();
+            $table->unique(['term', 'crn', 'username'], 'teaches_term_crn_username_unique');
+        });
+        Schema::table('teaches', function (Blueprint $table) {
+            $table->foreign('username', 'teaches_username_foreign')
+                  ->references('username')
+                  ->on('users')
+                  ->cascadeOnDelete();
         });
     }
+    
 
     /**
      * Reverse the migrations.

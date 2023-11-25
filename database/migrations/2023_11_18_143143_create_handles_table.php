@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 
 return new class extends Migration
 {
@@ -13,16 +15,16 @@ return new class extends Migration
     {
         Schema::create('handles', function (Blueprint $table) {   
             $table->string('term');
-            $table->foreign('term')->references('term')->on('courses')->cascadeOnDelete();
             $table->string('crn');
-            $table->foreign('crn')->references('crn')->on('courses')->cascadeOnDelete(); // Foreign key referencing songs
             $table->string('username');
-            $table->foreign('username')->references('username')->on('users')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->unique(['term', 'crn', 'username'], 'key');
+    
+            $table->unique(['term', 'crn', 'username'], 'handles_term_crn_username_unique');
         });
+        DB::statement('ALTER TABLE handles ADD CONSTRAINT handles_courses_foreign_unique FOREIGN KEY (term, crn) REFERENCES courses(term, crn) ON DELETE CASCADE');
+        DB::statement('ALTER TABLE handles ADD CONSTRAINT handles_users_foreign FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE');
     }
+    
 
     /**
      * Reverse the migrations.

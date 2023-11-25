@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,15 +15,15 @@ return new class extends Migration
         Schema::create('courserequirements', function (Blueprint $table) {
             $table->id();
             $table->string('term');
-            $table->foreign('term')->references('term')->on('courses')->cascadeOnDelete();
             $table->string('crn');
-            $table->foreign('crn')->references('crn')->on('courses')->cascadeOnDelete();
             $table->string('type');
-            $table->foreign('type')->references('type')->on('requirements')->cascadeOnDelete();
-            $table->unique(['term', 'crn', 'type'], 'key');
             $table->timestamps();
+            $table->unique(['term', 'crn', 'type'], 'courserequirements_term_crn_type_unique');
         });
+        DB::statement('ALTER TABLE courserequirements ADD CONSTRAINT courserequirements_courses_foreign FOREIGN KEY (term, crn) REFERENCES courses(term, crn) ON DELETE CASCADE');
+        DB::statement('ALTER TABLE courserequirements ADD CONSTRAINT courserequirements_requirements_foreign FOREIGN KEY (type) REFERENCES requirements(type) ON DELETE CASCADE');
     }
+
 
     /**
      * Reverse the migrations.
