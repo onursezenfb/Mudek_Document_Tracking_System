@@ -14,6 +14,10 @@ class RequirementDocumentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'req_type' => $this->req_type,
+            'doc_type' => $this->doc_type
+        ];
     }
 }

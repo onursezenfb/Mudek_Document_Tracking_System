@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('course_name');
             $table->string('program_code');
             $table->unsignedInteger('exam_count');
-            $table->string('term');
-            $table->string('crn');
+            $table->string('term')->index();
+            $table->string("crn")->index();
             $table->string('section_code');
 
             $table->unique(['term', 'crn'], 'key');
