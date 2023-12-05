@@ -33,3 +33,12 @@ Route::get('users/{user}', [UserController::class, 'show'])->name('show');
 Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('edit');
 Route::put('users/{user}', [UserController::class, 'update'])->name('update');
 Route::delete('users/{user}', [UserController::class, 'destroy'])->name('destroy');
+
+
+Route::get('requirements', [RequirementController::class, 'index'])->name('index');
+Route::get('requirements/create', [RequirementController::class, 'create'])->name('create');
+Route::post('requirements', [RequirementController::class, 'store'])->name('store');
+Route::get('requirements/{requirement}', [RequirementController::class, 'show'])->name('show');
+Route::get('requirements/{requirement}/edit', [RequirementController::class, 'edit'])->name('edit');
+Route::put('requirements/{requirement}', [RequirementController::class, 'update'])->name('update');
+Route::delete('requirements/{requirement}', [RequirementController::class, 'destroy'])->name('destroy');

@@ -3,62 +3,61 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Requirement;
 
 class RequirementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $requirements = Requirement::all();
+        return response()->json($requirements);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'type' => 'required|string'
+            ]);
+
+            if (Requirement::where('type', $validated['type'])->exists()) {
+                return response()->json(['error' => 'Requirement already exists'], 409);
+            }
+
+            $requirement = Requirement::create($validated);
+    
+            return response()->json($requirement, 201);
+    
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Requirement creation failed',
+                'message' => $e->getMessage()
+            ], 404);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($type)
     {
-        //
+        try{
+            $requirement = Requirement::findOrFail($type);
+            return response()->json($requirement);
+        }
+        catch (\Exception $e){
+            return response()->json(['message' => 'Requirement not found'], 404);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Remove the specified resource from storage.
+    public function destroy($type)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try{
+            $requirement = Requirement::findOrFail($type);
+            $requirement->delete();
+        }
+        catch (\Exception $e){
+            return response()->json(['message' => 'Requirement not found'], 404);
+        }
     }
 }
